@@ -1,12 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:haruka2022/model/dbhar_model.dart';
 import 'package:haruka2022/provider/dbhar_filter_provider.dart';
 import 'package:haruka2022/provider/dbhar_provider.dart';
 import 'package:haruka2022/provider/dbhar_sorting_provider.dart';
-import 'package:haruka2022/screen/dbhar/filter_dbhar.dart';
 import 'package:provider/provider.dart';
 
 class DbHarAdmin extends StatefulWidget {
@@ -176,7 +172,7 @@ class _DbHarAdminState extends State<DbHarAdmin> {
     final dbHarFilterProvider = Provider.of<DbHarFilterProvider>(context);
     return Column(
       children: [
-        SizedBox(
+        const SizedBox(
           height: 16,
         ),
         Padding(
@@ -783,7 +779,7 @@ class _DbHarAdminState extends State<DbHarAdmin> {
                                     ),
                                     child: Column(
                                       children: [
-                                        Text("Apply",
+                                        const Text("Apply",
                                             style: TextStyle(fontSize: 18))
                                       ],
                                     ))
@@ -797,7 +793,7 @@ class _DbHarAdminState extends State<DbHarAdmin> {
                 },
                 child: const Text('Filter'),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 12,
               ),
               ElevatedButton(
@@ -1052,7 +1048,7 @@ class _DbHarAdminState extends State<DbHarAdmin> {
                 },
                 child: const Text('Sorting'),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 12,
               ),
               ElevatedButton(

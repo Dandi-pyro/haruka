@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:haruka2022/screen/dbhar/db_har_admin_control.dart';
+import 'package:haruka2022/screen/dbhar/dbhar_admin.dart';
 import 'package:haruka2022/screen/super%20admin/home_super_admin.dart';
 import 'package:haruka2022/screen/account_screen.dart';
 import 'package:haruka2022/screen/user/db_har_user.dart';
@@ -38,7 +40,7 @@ class _TabControlScreenSuperAdminState
       body: currentIndex == 0
           ? HomeScreenSuperAdmin()
           : currentIndex == 1
-              ? DbHarUser()
+              ? DbHarAdminControl()
               : currentIndex == 2
                   ? Center()
                   : currentIndex == 3

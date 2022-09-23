@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:haruka2022/provider/auth_provider.dart';
+import 'package:haruka2022/provider/create_dbhar_provider.dart';
 import 'package:haruka2022/provider/dbhar_filter_provider.dart';
 import 'package:haruka2022/provider/dbhar_provider.dart';
 import 'package:haruka2022/provider/dbhar_sorting_provider.dart';
@@ -45,6 +46,9 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (_) => DbHarSortingProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => CreateDbHarProvider(),
         ),
       ],
       child: MaterialApp(

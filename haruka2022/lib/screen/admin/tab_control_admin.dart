@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:haruka2022/screen/admin/home_admin.dart';
 import 'package:haruka2022/screen/account_screen.dart';
+import 'package:haruka2022/screen/dbhar/db_har_admin_control.dart';
+import 'package:haruka2022/screen/dbhar/dbhar_admin.dart';
 import 'package:haruka2022/screen/user/db_har_user.dart';
 
 class TabControlScreenAdmin extends StatefulWidget {
@@ -36,7 +38,7 @@ class _TabControlScreenAdminState extends State<TabControlScreenAdmin> {
       body: currentIndex == 0
           ? HomeScreenAdmin()
           : currentIndex == 1
-              ? DbHarUser()
+              ? DbHarAdminControl()
               : currentIndex == 2
                   ? Center()
                   : currentIndex == 3

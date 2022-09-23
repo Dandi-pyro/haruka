@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:haruka2022/model/create_dbhar_model.dart';
 import 'package:haruka2022/model/dbhar_model.dart';
 import 'package:haruka2022/model/edit_user_model.dart';
 import 'package:haruka2022/model/forgot_password_model.dart';
@@ -13,7 +14,7 @@ import 'package:haruka2022/utils/constant/preferences_key.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ServicesApi {
-  final baseUrl = 'http://localhost/haruka/index.php';
+  final baseUrl = 'http://192.168.1.14:80/haruka/index.php';
   final Dio dio = Dio();
 
   ServicesApi() {
@@ -152,6 +153,54 @@ class ServicesApi {
       final data = response.data;
       return DbHarModel.fromJson(data);
     } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<CreateDbHarModel> postCreateDbhar(
+    String minFrequency,
+    String maxFrequency,
+    String bandwidth,
+    String band,
+    String jenisBand,
+    String wp,
+    String techWorld,
+    String techIndonesia,
+    String license,
+    String assignment,
+    String document,
+    String isuTeknis,
+    String isuLain,
+    String ref,
+    String ket,
+    String ide,
+    String idUser,
+  ) async {
+    try {
+      final url = '$baseUrl/maindata/create';
+      final response = await dio.post(url, data: {
+        "min_frekuensi": minFrequency,
+        "max_frekuensi": maxFrequency,
+        "bandwidth": bandwidth,
+        "band": band,
+        "jenis_band": jenisBand,
+        "wp": wp,
+        "tech_world": techWorld,
+        "tech_indonesia": techIndonesia,
+        "license": license,
+        "assignment": assignment,
+        "document": document,
+        "isu_teknis": isuTeknis,
+        "isu_lain": isuLain,
+        "ref": ref,
+        "ket": ket,
+        "ide": ide,
+        "id_user": idUser,
+      });
+      final data = response.data;
+      return CreateDbHarModel.fromJson(data);
+    } catch (e) {
+      print('DataV = $e');
       rethrow;
     }
   }
