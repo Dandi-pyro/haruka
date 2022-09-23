@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:haruka2022/background.dart';
 import 'package:haruka2022/screen/login.dart';
 import 'package:haruka2022/provider/register_provier.dart';
+import 'package:haruka2022/screen/splash_screen.dart';
 import 'package:haruka2022/screen/user/tab_control_user.dart';
 import 'package:provider/provider.dart';
 
@@ -187,8 +188,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                             Navigator.pushAndRemoveUntil(
                                 (context),
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        const TabControlScreen()),
+                                    builder: (context) => const SplashScreen()),
                                 (route) => false);
                           }
                         }

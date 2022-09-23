@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:haruka2022/provider/dbhar_provider.dart';
 import 'package:haruka2022/provider/list_user_provider.dart';
 import 'package:haruka2022/screen/admin/tab_control_admin.dart';
 import 'package:haruka2022/screen/login.dart';
@@ -68,6 +69,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Future.delayed(Duration.zero, () {
       Provider.of<ListUserProvider>(context, listen: false).getListUser();
+      Provider.of<DbHarProvider>(context, listen: false).getDbHar();
     });
     getUser();
     getPrefs();

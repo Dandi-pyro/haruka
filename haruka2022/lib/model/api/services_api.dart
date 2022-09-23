@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:haruka2022/model/dbhar_model.dart';
 import 'package:haruka2022/model/edit_user_model.dart';
 import 'package:haruka2022/model/forgot_password_model.dart';
 import 'package:haruka2022/model/list_user_model.dart';
@@ -12,7 +13,7 @@ import 'package:haruka2022/utils/constant/preferences_key.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ServicesApi {
-  final baseUrl = 'http://192.168.1.21:80/haruka/index.php';
+  final baseUrl = 'http://localhost/haruka/index.php';
   final Dio dio = Dio();
 
   ServicesApi() {
@@ -86,7 +87,7 @@ class ServicesApi {
 
   Future<ListUserModel> getListUser() async {
     try {
-      final url = '$baseUrl/user/list';
+      final url = '$baseUrl/user/list?limit=2000';
       final response = await dio.get(url);
       final data = response.data;
       return ListUserModel.fromJson(data);
@@ -108,6 +109,48 @@ class ServicesApi {
       });
       final data = response.data;
       return EditUserModel.fromJson(data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<DbHarModel> getDbHar() async {
+    try {
+      final url = '$baseUrl/maindata/list?limit=2000';
+      final response = await dio.get(url);
+      final data = response.data;
+      return DbHarModel.fromJson(data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<DbHarModel> getDbHarFilter(
+      String wp,
+      String minOverlap,
+      String maxOverlap,
+      String minBandwith,
+      String maxBandwith,
+      String minFrequency,
+      String maxFrequency) async {
+    try {
+      final url =
+          '$baseUrl/maindata/list?wp=$wp&minIndexOverlap=$minOverlap&maxIndexOverlap=$maxOverlap&minBandwidth=$minBandwith&maxBandwidth=$maxBandwith&min_frekuensi=$minFrequency&max_frekuensi=$maxFrequency&limit=2000';
+      final response = await dio.get(url);
+      final data = response.data;
+      return DbHarModel.fromJson(data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<DbHarModel> getDbHarSorting(String sort, String order) async {
+    try {
+      final url =
+          '$baseUrl/maindata/list?sort=$sort&order_by=$order&limit=2000';
+      final response = await dio.get(url);
+      final data = response.data;
+      return DbHarModel.fromJson(data);
     } catch (e) {
       rethrow;
     }

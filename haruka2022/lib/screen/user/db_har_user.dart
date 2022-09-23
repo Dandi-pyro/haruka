@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:haruka2022/provider/dbhar_provider.dart';
+import 'package:haruka2022/screen/dbhar/dbhar_admin.dart';
+import 'package:provider/provider.dart';
 
 class DbHarUser extends StatefulWidget {
   const DbHarUser({super.key});
@@ -18,6 +21,7 @@ class _DbHarUserState extends State<DbHarUser> {
 
   @override
   Widget build(BuildContext context) {
+    final dbHarProvider = Provider.of<DbHarProvider>(context);
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -30,15 +34,11 @@ class _DbHarUserState extends State<DbHarUser> {
           centerTitle: true,
         ),
         body: TabBarView(
-          children: myTabs.map((Tab tab) {
-            final String label = tab.text!.toLowerCase();
-            return Center(
-              child: Text(
-                'This is the $label tab',
-                style: const TextStyle(fontSize: 36),
-              ),
-            );
-          }).toList(),
+          children: [
+            DbHarAdmin(),
+            Center(),
+            Center(),
+          ],
         ),
       ),
     );
