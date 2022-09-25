@@ -100,7 +100,9 @@ class _CreateDbHarScreenState extends State<CreateDbHarScreen> {
   @override
   void initState() {
     super.initState();
-    getUser();
+    getUser().then((value) {
+      setState(() {});
+    });
   }
 
   @override
@@ -509,7 +511,7 @@ class _CreateDbHarScreenState extends State<CreateDbHarScreen> {
                         _refController.text,
                         _ketController.text,
                         _ideController.text,
-                        '40',
+                        user!,
                       );
                       if (isAvailable) {
                         if (mounted) {

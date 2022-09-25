@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:haruka2022/model/create_dbhar_model.dart';
 import 'package:haruka2022/model/dbhar_model.dart';
+import 'package:haruka2022/model/delete_dbhar_model.dart';
+import 'package:haruka2022/model/edit_dbhar_model.dart';
 import 'package:haruka2022/model/edit_user_model.dart';
 import 'package:haruka2022/model/forgot_password_model.dart';
 import 'package:haruka2022/model/list_user_model.dart';
@@ -23,15 +25,15 @@ class ServicesApi {
     }, onResponse: (response, handler) {
       return handler.next(response);
     }, onError: (DioError e, handler) async {
-      if (e.response!.statusCode == 401 || e.response!.statusCode == 403) {
-        final pref = await SharedPreferences.getInstance();
-        pref.remove(PreferencesKeys.token);
-        Navigator.pushAndRemoveUntil(
-            (MainNavigasiKey.mainNavigatorKey.currentContext!),
-            MaterialPageRoute(builder: (context) => const LoginScreen()),
-            (route) => false);
-        Fluttertoast.showToast(msg: 'Token Expired');
-      }
+      // if (e.response!.statusCode == 401 || e.response!.statusCode == 403) {
+      //   final pref = await SharedPreferences.getInstance();
+      //   pref.remove(PreferencesKeys.token);
+      //   Navigator.pushAndRemoveUntil(
+      //       (MainNavigasiKey.mainNavigatorKey.currentContext!),
+      //       MaterialPageRoute(builder: (context) => const LoginScreen()),
+      //       (route) => false);
+      //   Fluttertoast.showToast(msg: 'Token Expired');
+      // }
       return handler.next(e);
     }));
   }
@@ -200,7 +202,64 @@ class ServicesApi {
       final data = response.data;
       return CreateDbHarModel.fromJson(data);
     } catch (e) {
-      print('DataV = $e');
+      rethrow;
+    }
+  }
+
+  Future<EditDbHarModel> putEditDbHar(
+    String minFrequency,
+    String maxFrequency,
+    String bandwidth,
+    String band,
+    String jenisBand,
+    String wp,
+    String techWorld,
+    String techIndonesia,
+    String license,
+    String assignment,
+    String document,
+    String isuTeknis,
+    String isuLain,
+    String ref,
+    String ket,
+    String ide,
+    String id,
+  ) async {
+    try {
+      final url = '$baseUrl/maindata/update';
+      final response = await dio.put(url, data: {
+        "id": id,
+        "min_frekuensi": minFrequency,
+        "max_frekuensi": maxFrequency,
+        "bandwidth": bandwidth,
+        "band": band,
+        "jenis_band": jenisBand,
+        "wp": wp,
+        "tech_world": techWorld,
+        "tech_indonesia": techIndonesia,
+        "license": license,
+        "assignment": assignment,
+        "document": document,
+        "isu_teknis": isuTeknis,
+        "isu_lain": isuLain,
+        "ref": ref,
+        "ket": ket,
+        "ide": ide,
+      });
+      final data = response.data;
+      return EditDbHarModel.fromJson(data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<DeleteDbHarModel> deleteDbHar(String id) async {
+    try {
+      final url = '$baseUrl/maindata/delete';
+      final response = await dio.delete(url, data: {"id": id});
+      final data = response.data;
+      return DeleteDbHarModel.fromJson(data);
+    } catch (e) {
       rethrow;
     }
   }

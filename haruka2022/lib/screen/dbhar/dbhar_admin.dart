@@ -3,6 +3,9 @@ import 'package:haruka2022/model/dbhar_model.dart';
 import 'package:haruka2022/provider/dbhar_filter_provider.dart';
 import 'package:haruka2022/provider/dbhar_provider.dart';
 import 'package:haruka2022/provider/dbhar_sorting_provider.dart';
+import 'package:haruka2022/provider/delete_dbhar_provider.dart';
+import 'package:haruka2022/screen/dbhar/preview_dbhar.dart';
+import 'package:haruka2022/screen/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 class DbHarAdmin extends StatefulWidget {
@@ -170,6 +173,7 @@ class _DbHarAdminState extends State<DbHarAdmin> {
     Size size = MediaQuery.of(context).size;
     final dbHarSortingProvider = Provider.of<DbHarSortingProvider>(context);
     final dbHarFilterProvider = Provider.of<DbHarFilterProvider>(context);
+    final deleteDbHarProvider = Provider.of<DeleteDbHarProvider>(context);
     return Column(
       children: [
         const SizedBox(
@@ -1067,7 +1071,46 @@ class _DbHarAdminState extends State<DbHarAdmin> {
                     child: Text(dbhar.idMaindata!),
                   ),
                   title: Text(dbhar.document!),
-                  onTap: () {},
+                  trailing: IconButton(
+                    onPressed: () {
+                      deleteDbHarProvider
+                          .deleteDbHar(dbhar.idMaindata!)
+                          .then((value) {
+                        Navigator.pushAndRemoveUntil(
+                            (context),
+                            MaterialPageRoute(
+                                builder: (context) => const SplashScreen()),
+                            (route) => false);
+                      });
+                    },
+                    icon: const Icon(Icons.delete_rounded),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PreviewDbharScreen(
+                          minFreq: dbhar.minFrekuensi!,
+                          maxFreq: dbhar.maxFrekuensi!,
+                          bandwidth: dbhar.bandwidth!,
+                          band: dbhar.band!,
+                          jenisBand: dbhar.jenisBand!,
+                          wp: dbhar.wp!,
+                          techWorld: dbhar.techWorld!,
+                          techIndonesia: dbhar.techIndonesia!,
+                          license: dbhar.license!,
+                          assignment: dbhar.assignment!,
+                          document: dbhar.document!,
+                          ide: dbhar.ide!,
+                          isuLain: dbhar.isuLain!,
+                          isuTeknis: dbhar.isuTeknis!,
+                          ket: dbhar.ket!,
+                          ref: dbhar.ref!,
+                          id: dbhar.idMaindata!,
+                        ),
+                      ),
+                    );
+                  },
                 );
               },
               separatorBuilder: (BuildContext context, int index) =>

@@ -4,6 +4,8 @@ import 'package:haruka2022/provider/create_dbhar_provider.dart';
 import 'package:haruka2022/provider/dbhar_filter_provider.dart';
 import 'package:haruka2022/provider/dbhar_provider.dart';
 import 'package:haruka2022/provider/dbhar_sorting_provider.dart';
+import 'package:haruka2022/provider/delete_dbhar_provider.dart';
+import 'package:haruka2022/provider/edit_dbhar.dart';
 import 'package:haruka2022/provider/edit_user_provider.dart';
 import 'package:haruka2022/provider/list_user_provider.dart';
 import 'package:haruka2022/screen/admin/tab_control_admin.dart';
@@ -49,6 +51,12 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (_) => CreateDbHarProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => EditDbHarProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => DeleteDbHarProvider(),
         ),
       ],
       child: MaterialApp(
