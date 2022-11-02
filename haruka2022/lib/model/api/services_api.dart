@@ -1,9 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:haruka2022/model/apg_model.dart';
+import 'package:haruka2022/model/create_apg.dart';
+import 'package:haruka2022/model/create_apg_respon_model.dart';
 import 'package:haruka2022/model/create_dbhar_model.dart';
 import 'package:haruka2022/model/dbhar_model.dart';
+import 'package:haruka2022/model/delete_apg_model.dart';
 import 'package:haruka2022/model/delete_dbhar_model.dart';
+import 'package:haruka2022/model/edit_apg_model.dart';
 import 'package:haruka2022/model/edit_dbhar_model.dart';
 import 'package:haruka2022/model/edit_user_model.dart';
 import 'package:haruka2022/model/forgot_password_model.dart';
@@ -16,7 +21,7 @@ import 'package:haruka2022/utils/constant/preferences_key.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ServicesApi {
-  final baseUrl = 'http://192.168.1.14:80/haruka/index.php';
+  final baseUrl = 'http://192.168.1.2:80/haruka/index.php';
   final Dio dio = Dio();
 
   ServicesApi() {
@@ -25,15 +30,15 @@ class ServicesApi {
     }, onResponse: (response, handler) {
       return handler.next(response);
     }, onError: (DioError e, handler) async {
-      // if (e.response!.statusCode == 401 || e.response!.statusCode == 403) {
-      //   final pref = await SharedPreferences.getInstance();
-      //   pref.remove(PreferencesKeys.token);
-      //   Navigator.pushAndRemoveUntil(
-      //       (MainNavigasiKey.mainNavigatorKey.currentContext!),
-      //       MaterialPageRoute(builder: (context) => const LoginScreen()),
-      //       (route) => false);
-      //   Fluttertoast.showToast(msg: 'Token Expired');
-      // }
+      if (e.response!.statusCode == 401 || e.response!.statusCode == 403) {
+        final pref = await SharedPreferences.getInstance();
+        pref.remove(PreferencesKeys.token);
+        Navigator.pushAndRemoveUntil(
+            (MainNavigasiKey.mainNavigatorKey.currentContext!),
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
+            (route) => false);
+        Fluttertoast.showToast(msg: 'Token Expired');
+      }
       return handler.next(e);
     }));
   }
@@ -159,6 +164,17 @@ class ServicesApi {
     }
   }
 
+  Future<DbHarModel> getDbHarSearch(String search) async {
+    try {
+      final url = '$baseUrl/maindata/list?search=$search&limit=2000';
+      final response = await dio.get(url);
+      final data = response.data;
+      return DbHarModel.fromJson(data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<CreateDbHarModel> postCreateDbhar(
     String minFrequency,
     String maxFrequency,
@@ -259,6 +275,165 @@ class ServicesApi {
       final response = await dio.delete(url, data: {"id": id});
       final data = response.data;
       return DeleteDbHarModel.fromJson(data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<ApgModel> getApg(String apg) async {
+    try {
+      final url = '$baseUrl/apg/list?dokumen=APG23-$apg&limit=2000';
+      final response = await dio.get(url);
+      final data = response.data;
+      return ApgModel.fromJson(data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<CreateApgModel> postCreateApg(
+    String alokasi,
+    String agendaItem,
+    String dokumen,
+    String namaDokumen,
+    String sourceDokumen,
+    String summaryDokumen,
+    String tanggalDokumen,
+    String picStakeholder,
+    String picKominfo,
+    String file,
+    String user,
+  ) async {
+    try {
+      final url = '$baseUrl/apg/create';
+      final response = await dio.post(url, data: {
+        "alokasi": alokasi,
+        "agenda_item": agendaItem,
+        "dokumen": dokumen,
+        "nama_dokumen": namaDokumen,
+        "source_dokumen": sourceDokumen,
+        "summary_dokumen": summaryDokumen,
+        "tanggal_dokumen": tanggalDokumen,
+        "pic_stakeholder": picStakeholder,
+        "pic_kominfo": picKominfo,
+        "file": file,
+        "user": user,
+      });
+      final data = response.data;
+      return CreateApgModel.fromJson(data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<EditApgModel> putEditApg(
+    String id,
+    String alokasi,
+    String agendaItem,
+    String dokumen,
+    String namaDokumen,
+    String sourceDokumen,
+    String summaryDokumen,
+    String tanggalDokumen,
+    String picStakeholder,
+    String picKominfo,
+    String file,
+  ) async {
+    try {
+      final url = '$baseUrl/apg/update';
+      final response = await dio.put(url, data: {
+        "id": id,
+        "alokasi": alokasi,
+        "agenda_item": agendaItem,
+        "dokumen": dokumen,
+        "nama_dokumen": namaDokumen,
+        "source_dokumen": sourceDokumen,
+        "summary_dokumen": summaryDokumen,
+        "tanggal_dokumen": tanggalDokumen,
+        "pic_stakeholder": picStakeholder,
+        "pic_kominfo": picKominfo,
+        "file": file,
+      });
+      final data = response.data;
+      return EditApgModel.fromJson(data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<DeleteApgModel> deleteApg(String id) async {
+    try {
+      final url = '$baseUrl/apg/delete';
+      final response = await dio.delete(url, data: {"id": id});
+      final data = response.data;
+      return DeleteApgModel.fromJson(data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<ApgModel> sortingApg(String apg, String sorting) async {
+    try {
+      final url =
+          '$baseUrl/apg/list?dokumen=APG23-$apg&sort=$sorting&limit=2000';
+      final response = await dio.get(url);
+      final data = response.data;
+      return ApgModel.fromJson(data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<ApgModel> filterApg(String apg, String filter) async {
+    try {
+      final url =
+          '$baseUrl/apg/list?dokumen=APG23-$apg&alokasi=$filter&limit=2000';
+      final response = await dio.get(url);
+      final data = response.data;
+      return ApgModel.fromJson(data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<ApgModel> searchApg(String apg, String search) async {
+    try {
+      final url =
+          '$baseUrl/apg/list?dokumen=APG23-$apg&search=$search&limit=2000';
+      final response = await dio.get(url);
+      final data = response.data;
+      return ApgModel.fromJson(data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<CreateApgResponModel> postCreateApgRespon(
+    String id,
+    String alokasi,
+    String agendaItem,
+    String judul,
+    String dokumen,
+    String negara,
+    String respon,
+    String note,
+    String user,
+  ) async {
+    try {
+      final url = '$baseUrl/apgrespon/create';
+      final response = await dio.post(url, data: {
+        "id_apg": id,
+        "alokasi": alokasi,
+        "agenda_item": agendaItem,
+        "judul_ai": judul,
+        "dokumen": dokumen,
+        "negara": negara,
+        "respon": respon,
+        "note": note,
+        "user": user,
+      });
+      final data = response.data;
+      return CreateApgResponModel.fromJson(data);
     } catch (e) {
       rethrow;
     }

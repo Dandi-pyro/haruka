@@ -3,6 +3,8 @@ import 'package:haruka2022/model/dbhar_model.dart';
 import 'package:haruka2022/provider/dbhar_filter_provider.dart';
 import 'package:haruka2022/provider/dbhar_provider.dart';
 import 'package:haruka2022/provider/dbhar_sorting_provider.dart';
+import 'package:haruka2022/screen/dbhar/preview_dbhar_user.dart';
+import 'package:haruka2022/screen/dbhar/search_dbhar_user.dart';
 import 'package:provider/provider.dart';
 
 class DbHarUser extends StatefulWidget {
@@ -1060,7 +1062,14 @@ class _DbHarUserState extends State<DbHarUser> {
                   width: 12,
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SearchDbHarUserScreen(),
+                      ),
+                    );
+                  },
                   child: const Text('Search'),
                 ),
               ],
@@ -1072,10 +1081,35 @@ class _DbHarUserState extends State<DbHarUser> {
                   final dbhar = listDbhar!.data![index];
                   return ListTile(
                     leading: CircleAvatar(
-                      child: Text(dbhar.idMaindata!),
+                      child: Text(dbhar.no!),
                     ),
                     title: Text(dbhar.document!),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PreviewDbharUserScreen(
+                            minFreq: dbhar.minFrekuensi!,
+                            maxFreq: dbhar.maxFrekuensi!,
+                            bandwidth: dbhar.bandwidth!,
+                            band: dbhar.band!,
+                            jenisBand: dbhar.jenisBand!,
+                            wp: dbhar.wp!,
+                            techWorld: dbhar.techWorld!,
+                            techIndonesia: dbhar.techIndonesia!,
+                            license: dbhar.license!,
+                            assignment: dbhar.assignment!,
+                            document: dbhar.document!,
+                            ide: dbhar.ide!,
+                            isuLain: dbhar.isuLain!,
+                            isuTeknis: dbhar.isuTeknis!,
+                            ket: dbhar.ket!,
+                            ref: dbhar.ref!,
+                            id: dbhar.no!,
+                          ),
+                        ),
+                      );
+                    },
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) =>

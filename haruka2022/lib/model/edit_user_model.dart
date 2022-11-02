@@ -21,16 +21,19 @@ class EditUserModel {
 
 class Data {
   String? email;
+  String? token;
 
-  Data({this.email});
+  Data({this.email, this.token});
 
   Data.fromJson(Map<String, dynamic> json) {
     email = json['email'];
+    token = json['token'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['email'] = email;
+    data['token'] = token;
     return data;
   }
 }

@@ -27,7 +27,6 @@ const List<String> listJenisBand = <String>[
 ];
 const List<String> listWP = <String>[
   'WP1',
-  'WP1,WP3',
   'WP1/WP2',
   'WP1/WP3',
   'WP1/WP4',

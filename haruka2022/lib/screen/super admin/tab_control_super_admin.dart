@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:haruka2022/screen/apg/apg_admin.dart';
+import 'package:haruka2022/screen/awg/awg_screen.dart';
 import 'package:haruka2022/screen/dbhar/db_har_admin_control.dart';
 import 'package:haruka2022/screen/dbhar/dbhar_admin.dart';
 import 'package:haruka2022/screen/super%20admin/home_super_admin.dart';
 import 'package:haruka2022/screen/account_screen.dart';
-import 'package:haruka2022/screen/user/db_har_user.dart';
+import 'package:haruka2022/screen/dbhar/db_har_user.dart';
 
 class TabControlScreenSuperAdmin extends StatefulWidget {
   const TabControlScreenSuperAdmin({super.key});
@@ -42,9 +44,9 @@ class _TabControlScreenSuperAdminState
           : currentIndex == 1
               ? DbHarAdminControl()
               : currentIndex == 2
-                  ? Center()
+                  ? AwgScreen()
                   : currentIndex == 3
-                      ? Center()
+                      ? ApgAdmin()
                       : AccountScreen(),
     );
   }

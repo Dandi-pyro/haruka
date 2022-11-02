@@ -25,7 +25,7 @@ class DbHarModel {
 }
 
 class Data {
-  String? idMaindata;
+  String? no;
   String? frequency;
   String? minFrekuensi;
   String? maxFrekuensi;
@@ -56,7 +56,7 @@ class Data {
   String? idUser;
 
   Data(
-      {this.idMaindata,
+      {this.no,
       this.frequency,
       this.minFrekuensi,
       this.maxFrekuensi,
@@ -87,7 +87,7 @@ class Data {
       this.idUser});
 
   Data.fromJson(Map<String, dynamic> json) {
-    idMaindata = json['id_maindata'].toString();
+    no = json['no'].toString();
     frequency = json['frequency'];
     minFrekuensi = json['min_frekuensi'].toString();
     maxFrekuensi = json['max_frekuensi'].toString();
@@ -120,7 +120,7 @@ class Data {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id_maindata'] = idMaindata;
+    data['no'] = no;
     data['frequency'] = frequency;
     data['min_frekuensi'] = minFrekuensi;
     data['max_frekuensi'] = maxFrekuensi;

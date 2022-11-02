@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:haruka2022/provider/apg3_provider.dart';
+import 'package:haruka2022/provider/apg4_provider.dart';
 import 'package:haruka2022/provider/dbhar_provider.dart';
 import 'package:haruka2022/provider/list_user_provider.dart';
 import 'package:haruka2022/screen/admin/tab_control_admin.dart';
@@ -61,6 +63,7 @@ class _SplashScreenState extends State<SplashScreen> {
       getPrefs();
     }
     final datas = jwtDecode.parseJwt(data);
+    print(datas);
     user = datas.values.elementAt(3).toString();
   }
 
@@ -70,6 +73,8 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(Duration.zero, () {
       Provider.of<ListUserProvider>(context, listen: false).getListUser();
       Provider.of<DbHarProvider>(context, listen: false).getDbHar();
+      Provider.of<Apg3Provider>(context, listen: false).getApg('3');
+      Provider.of<Apg4Provider>(context, listen: false).getApg('4');
     });
     getUser();
     getPrefs();

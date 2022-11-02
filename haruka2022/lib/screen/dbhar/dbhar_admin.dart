@@ -5,6 +5,7 @@ import 'package:haruka2022/provider/dbhar_provider.dart';
 import 'package:haruka2022/provider/dbhar_sorting_provider.dart';
 import 'package:haruka2022/provider/delete_dbhar_provider.dart';
 import 'package:haruka2022/screen/dbhar/preview_dbhar.dart';
+import 'package:haruka2022/screen/dbhar/search_dbhar.dart';
 import 'package:haruka2022/screen/splash_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -164,7 +165,7 @@ class _DbHarAdminState extends State<DbHarAdmin> {
     if (colorSort1 == colorS) {
       return "asc";
     } else {
-      return "dsc";
+      return "desc";
     }
   }
 
@@ -192,606 +193,610 @@ class _DbHarAdminState extends State<DbHarAdmin> {
                     )),
                     context: context,
                     builder: (BuildContext context) {
-                      return Scaffold(
-                        appBar: AppBar(
-                          title: const Text('Filter'),
-                          centerTitle: true,
-                        ),
-                        body: Form(
-                          key: _formKey,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: size.height * 0.02,
-                                ),
-                                const Text(
-                                  'Frequency Range :',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                      return StatefulBuilder(builder: (context, setState) {
+                        return Scaffold(
+                          appBar: AppBar(
+                            title: const Text('Filter'),
+                            centerTitle: true,
+                          ),
+                          body: Form(
+                            key: _formKey,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: size.height * 0.02,
                                   ),
-                                ),
-                                SizedBox(
-                                  height: size.height * 0.02,
-                                ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 40),
-                                  child: TextFormField(
-                                    controller: _minFrekuensiController,
-                                    keyboardType: TextInputType.number,
-                                    decoration: const InputDecoration(
-                                      hintText: 'Minimum Frequency (kHz)',
+                                  const Text(
+                                    'Frequency Range :',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return ("Masukkan minimum frequency");
-                                      }
-                                      return null;
-                                    },
                                   ),
-                                ),
-                                SizedBox(
-                                  height: size.height * 0.02,
-                                ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 40),
-                                  child: TextFormField(
-                                    controller: _maxFrekuensiController,
-                                    keyboardType: TextInputType.number,
-                                    decoration: const InputDecoration(
-                                      hintText: 'Maximum Frequency (kHz)',
-                                    ),
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return ("Masukkan maximum frequency");
-                                      }
-                                      return null;
-                                    },
+                                  SizedBox(
+                                    height: size.height * 0.02,
                                   ),
-                                ),
-                                SizedBox(
-                                  height: size.height * 0.02,
-                                ),
-                                const Text(
-                                  'Work Package :',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                                  Container(
+                                    alignment: Alignment.center,
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 40),
+                                    child: TextFormField(
+                                      controller: _minFrekuensiController,
+                                      keyboardType: TextInputType.number,
+                                      decoration: const InputDecoration(
+                                        hintText: 'Minimum Frequency (kHz)',
+                                      ),
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return ("Masukkan minimum frequency");
+                                        }
+                                        return null;
+                                      },
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: size.height * 0.02,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: colorWP1,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: const Text(
-                                          'WP1',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        colorWP1 =
-                                            Colors.lightBlue.withOpacity(0.5);
-                                        colorWP2 = Colors.white;
-                                        colorWP3 = Colors.white;
-                                        colorWP4 = Colors.white;
-                                        colorWP5 = Colors.white;
-                                        selectedWP = selectWP();
-                                        setState(() {});
-                                      },
-                                    ),
-                                    SizedBox(
-                                      width: size.width * 0.02,
-                                    ),
-                                    InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: colorWP2,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: const Text(
-                                          'WP2',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        colorWP1 = Colors.white;
-                                        colorWP2 =
-                                            Colors.lightBlue.withOpacity(0.5);
-                                        colorWP3 = Colors.white;
-                                        colorWP4 = Colors.white;
-                                        colorWP5 = Colors.white;
-                                        selectedWP = selectWP();
-                                        setState(() {});
-                                      },
-                                    ),
-                                    SizedBox(
-                                      width: size.width * 0.02,
-                                    ),
-                                    InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: colorWP3,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: const Text(
-                                          'WP3',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        colorWP1 = Colors.white;
-                                        colorWP2 = Colors.white;
-                                        colorWP3 =
-                                            Colors.lightBlue.withOpacity(0.5);
-                                        colorWP4 = Colors.white;
-                                        colorWP5 = Colors.white;
-                                        selectedWP = selectWP();
-                                        setState(() {});
-                                      },
-                                    ),
-                                    SizedBox(
-                                      width: size.width * 0.02,
-                                    ),
-                                    InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: colorWP4,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: const Text(
-                                          'WP4',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        colorWP1 = Colors.white;
-                                        colorWP2 = Colors.white;
-                                        colorWP3 = Colors.white;
-                                        colorWP4 =
-                                            Colors.lightBlue.withOpacity(0.5);
-                                        colorWP5 = Colors.white;
-                                        selectedWP = selectWP();
-                                        setState(() {});
-                                      },
-                                    ),
-                                    SizedBox(
-                                      width: size.width * 0.02,
-                                    ),
-                                    InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: colorWP5,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: const Text(
-                                          'WP5',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        colorWP1 = Colors.white;
-                                        colorWP2 = Colors.white;
-                                        colorWP3 = Colors.white;
-                                        colorWP4 = Colors.white;
-                                        colorWP5 =
-                                            Colors.lightBlue.withOpacity(0.5);
-                                        selectedWP = selectWP();
-                                        setState(() {});
-                                      },
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: size.height * 0.02,
-                                ),
-                                const Text(
-                                  'Index Overlap :',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                                  SizedBox(
+                                    height: size.height * 0.02,
                                   ),
-                                ),
-                                SizedBox(
-                                  height: size.height * 0.02,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: colorIO1,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: const Text(
-                                          'IO<20',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 40),
+                                    child: TextFormField(
+                                      controller: _maxFrekuensiController,
+                                      keyboardType: TextInputType.number,
+                                      decoration: const InputDecoration(
+                                        hintText: 'Maximum Frequency (kHz)',
                                       ),
-                                      onTap: () {
-                                        colorIO1 =
-                                            Colors.lightBlue.withOpacity(0.5);
-                                        colorIO2 = Colors.white;
-                                        colorIO3 = Colors.white;
-                                        colorIO4 = Colors.white;
-                                        colorIO5 = Colors.white;
-                                        colorIO6 = Colors.white;
-                                        selectedIO = selectIO('IO<20');
-                                        setState(() {});
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return ("Masukkan maximum frequency");
+                                        }
+                                        return null;
                                       },
                                     ),
-                                    SizedBox(
-                                      width: size.width * 0.02,
-                                    ),
-                                    InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: colorIO2,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: const Text(
-                                          '20<IO<40',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        colorIO1 = Colors.white;
-                                        colorIO2 =
-                                            Colors.lightBlue.withOpacity(0.5);
-                                        colorIO3 = Colors.white;
-                                        colorIO4 = Colors.white;
-                                        colorIO5 = Colors.white;
-                                        colorIO6 = Colors.white;
-                                        selectedIO = selectIO('20<IO<40');
-                                        setState(() {});
-                                      },
-                                    ),
-                                    SizedBox(
-                                      width: size.width * 0.02,
-                                    ),
-                                    InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: colorIO3,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: const Text(
-                                          '40<IO<60',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        colorIO1 = Colors.white;
-                                        colorIO2 = Colors.white;
-                                        colorIO3 =
-                                            Colors.lightBlue.withOpacity(0.5);
-                                        colorIO4 = Colors.white;
-                                        colorIO5 = Colors.white;
-                                        colorIO6 = Colors.white;
-                                        selectedIO = selectIO('40<IO<60');
-                                        setState(() {});
-                                      },
-                                    ),
-                                    SizedBox(
-                                      width: size.width * 0.02,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: size.height * 0.02,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: colorIO4,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: const Text(
-                                          '60<IO<80',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        colorIO1 = Colors.white;
-                                        colorIO2 = Colors.white;
-                                        colorIO3 = Colors.white;
-                                        colorIO4 =
-                                            Colors.lightBlue.withOpacity(0.5);
-                                        colorIO5 = Colors.white;
-                                        colorIO6 = Colors.white;
-                                        selectedIO = selectIO('60<IO<80');
-                                        setState(() {});
-                                      },
-                                    ),
-                                    SizedBox(
-                                      width: size.width * 0.02,
-                                    ),
-                                    InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: colorIO5,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: const Text(
-                                          '80<IO<100',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        colorIO1 = Colors.white;
-                                        colorIO2 = Colors.white;
-                                        colorIO3 = Colors.white;
-                                        colorIO4 = Colors.white;
-                                        colorIO5 =
-                                            Colors.lightBlue.withOpacity(0.5);
-                                        colorIO6 = Colors.white;
-                                        selectedIO = selectIO('80<IO<100');
-                                        setState(() {});
-                                      },
-                                    ),
-                                    SizedBox(
-                                      width: size.width * 0.02,
-                                    ),
-                                    InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: colorIO6,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: const Text(
-                                          'IO>100',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        colorIO1 = Colors.white;
-                                        colorIO2 = Colors.white;
-                                        colorIO3 = Colors.white;
-                                        colorIO4 = Colors.white;
-                                        colorIO5 = Colors.white;
-                                        colorIO6 =
-                                            Colors.lightBlue.withOpacity(0.5);
-                                        selectedIO = selectIO('IO>100');
-                                        setState(() {});
-                                      },
-                                    ),
-                                    SizedBox(
-                                      width: size.width * 0.02,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: size.height * 0.02,
-                                ),
-                                const Text(
-                                  'Bandwith :',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
                                   ),
-                                ),
-                                SizedBox(
-                                  height: size.height * 0.02,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: colorB1,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: const Text(
-                                          'BW<0.5k',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
+                                  SizedBox(
+                                    height: size.height * 0.02,
+                                  ),
+                                  const Text(
+                                    'Work Package :',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: size.height * 0.02,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: colorWP1,
+                                            border:
+                                                Border.all(color: Colors.black),
+                                          ),
+                                          child: const Text(
+                                            'WP1',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
+                                        onTap: () {
+                                          colorWP1 =
+                                              Colors.lightBlue.withOpacity(0.5);
+                                          colorWP2 = Colors.white;
+                                          colorWP3 = Colors.white;
+                                          colorWP4 = Colors.white;
+                                          colorWP5 = Colors.white;
+                                          selectedWP = selectWP();
+                                          setState(() {});
+                                        },
                                       ),
-                                      onTap: () {
-                                        colorB1 =
-                                            Colors.lightBlue.withOpacity(0.5);
-                                        colorB2 = Colors.white;
-                                        colorB3 = Colors.white;
-                                        colorB4 = Colors.white;
-                                        selectedBandwith = selectIO('BW<0.5k');
-                                        setState(() {});
-                                      },
-                                    ),
-                                    SizedBox(
-                                      width: size.width * 0.02,
-                                    ),
-                                    InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: colorB2,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: const Text(
-                                          '0.5k<BW<5k',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
+                                      SizedBox(
+                                        width: size.width * 0.02,
+                                      ),
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: colorWP2,
+                                            border:
+                                                Border.all(color: Colors.black),
+                                          ),
+                                          child: const Text(
+                                            'WP2',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
+                                        onTap: () {
+                                          colorWP1 = Colors.white;
+                                          colorWP2 =
+                                              Colors.lightBlue.withOpacity(0.5);
+                                          colorWP3 = Colors.white;
+                                          colorWP4 = Colors.white;
+                                          colorWP5 = Colors.white;
+                                          selectedWP = selectWP();
+                                          setState(() {});
+                                        },
                                       ),
-                                      onTap: () {
-                                        colorB1 = Colors.white;
-                                        colorB2 =
-                                            Colors.lightBlue.withOpacity(0.5);
-                                        colorB3 = Colors.white;
-                                        colorB4 = Colors.white;
-                                        selectedBandwith =
-                                            selectIO('0.5k<BW<5k');
-                                        setState(() {});
-                                      },
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: size.height * 0.02,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: colorB3,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: const Text(
-                                          '5k<BW<50k',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
+                                      SizedBox(
+                                        width: size.width * 0.02,
+                                      ),
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: colorWP3,
+                                            border:
+                                                Border.all(color: Colors.black),
+                                          ),
+                                          child: const Text(
+                                            'WP3',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
+                                        onTap: () {
+                                          colorWP1 = Colors.white;
+                                          colorWP2 = Colors.white;
+                                          colorWP3 =
+                                              Colors.lightBlue.withOpacity(0.5);
+                                          colorWP4 = Colors.white;
+                                          colorWP5 = Colors.white;
+                                          selectedWP = selectWP();
+                                          setState(() {});
+                                        },
                                       ),
-                                      onTap: () {
-                                        colorB1 = Colors.white;
-                                        colorB2 = Colors.white;
-                                        colorB3 =
-                                            Colors.lightBlue.withOpacity(0.5);
-                                        colorB4 = Colors.white;
-                                        selectedBandwith =
-                                            selectIO('5k<BW<50k');
-                                        setState(() {});
-                                      },
-                                    ),
-                                    SizedBox(
-                                      width: size.width * 0.02,
-                                    ),
-                                    InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: colorB4,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: const Text(
-                                          'BW>50k',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
+                                      SizedBox(
+                                        width: size.width * 0.02,
+                                      ),
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: colorWP4,
+                                            border:
+                                                Border.all(color: Colors.black),
+                                          ),
+                                          child: const Text(
+                                            'WP4',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
+                                        onTap: () {
+                                          colorWP1 = Colors.white;
+                                          colorWP2 = Colors.white;
+                                          colorWP3 = Colors.white;
+                                          colorWP4 =
+                                              Colors.lightBlue.withOpacity(0.5);
+                                          colorWP5 = Colors.white;
+                                          selectedWP = selectWP();
+                                          setState(() {});
+                                        },
                                       ),
-                                      onTap: () {
-                                        colorB1 = Colors.white;
-                                        colorB2 = Colors.white;
-                                        colorB3 = Colors.white;
-                                        colorB4 =
-                                            Colors.lightBlue.withOpacity(0.5);
-                                        selectedBandwith = selectIO('BW>50k');
-                                        setState(() {});
+                                      SizedBox(
+                                        width: size.width * 0.02,
+                                      ),
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: colorWP5,
+                                            border:
+                                                Border.all(color: Colors.black),
+                                          ),
+                                          child: const Text(
+                                            'WP5',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          colorWP1 = Colors.white;
+                                          colorWP2 = Colors.white;
+                                          colorWP3 = Colors.white;
+                                          colorWP4 = Colors.white;
+                                          colorWP5 =
+                                              Colors.lightBlue.withOpacity(0.5);
+                                          selectedWP = selectWP();
+                                          setState(() {});
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: size.height * 0.02,
+                                  ),
+                                  const Text(
+                                    'Index Overlap :',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: size.height * 0.02,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: colorIO1,
+                                            border:
+                                                Border.all(color: Colors.black),
+                                          ),
+                                          child: const Text(
+                                            'IO<20',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          colorIO1 =
+                                              Colors.lightBlue.withOpacity(0.5);
+                                          colorIO2 = Colors.white;
+                                          colorIO3 = Colors.white;
+                                          colorIO4 = Colors.white;
+                                          colorIO5 = Colors.white;
+                                          colorIO6 = Colors.white;
+                                          selectedIO = selectIO('IO<20');
+                                          setState(() {});
+                                        },
+                                      ),
+                                      SizedBox(
+                                        width: size.width * 0.02,
+                                      ),
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: colorIO2,
+                                            border:
+                                                Border.all(color: Colors.black),
+                                          ),
+                                          child: const Text(
+                                            '20<IO<40',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          colorIO1 = Colors.white;
+                                          colorIO2 =
+                                              Colors.lightBlue.withOpacity(0.5);
+                                          colorIO3 = Colors.white;
+                                          colorIO4 = Colors.white;
+                                          colorIO5 = Colors.white;
+                                          colorIO6 = Colors.white;
+                                          selectedIO = selectIO('20<IO<40');
+                                          setState(() {});
+                                        },
+                                      ),
+                                      SizedBox(
+                                        width: size.width * 0.02,
+                                      ),
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: colorIO3,
+                                            border:
+                                                Border.all(color: Colors.black),
+                                          ),
+                                          child: const Text(
+                                            '40<IO<60',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          colorIO1 = Colors.white;
+                                          colorIO2 = Colors.white;
+                                          colorIO3 =
+                                              Colors.lightBlue.withOpacity(0.5);
+                                          colorIO4 = Colors.white;
+                                          colorIO5 = Colors.white;
+                                          colorIO6 = Colors.white;
+                                          selectedIO = selectIO('40<IO<60');
+                                          setState(() {});
+                                        },
+                                      ),
+                                      SizedBox(
+                                        width: size.width * 0.02,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: size.height * 0.02,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: colorIO4,
+                                            border:
+                                                Border.all(color: Colors.black),
+                                          ),
+                                          child: const Text(
+                                            '60<IO<80',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          colorIO1 = Colors.white;
+                                          colorIO2 = Colors.white;
+                                          colorIO3 = Colors.white;
+                                          colorIO4 =
+                                              Colors.lightBlue.withOpacity(0.5);
+                                          colorIO5 = Colors.white;
+                                          colorIO6 = Colors.white;
+                                          selectedIO = selectIO('60<IO<80');
+                                          setState(() {});
+                                        },
+                                      ),
+                                      SizedBox(
+                                        width: size.width * 0.02,
+                                      ),
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: colorIO5,
+                                            border:
+                                                Border.all(color: Colors.black),
+                                          ),
+                                          child: const Text(
+                                            '80<IO<100',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          colorIO1 = Colors.white;
+                                          colorIO2 = Colors.white;
+                                          colorIO3 = Colors.white;
+                                          colorIO4 = Colors.white;
+                                          colorIO5 =
+                                              Colors.lightBlue.withOpacity(0.5);
+                                          colorIO6 = Colors.white;
+                                          selectedIO = selectIO('80<IO<100');
+                                          setState(() {});
+                                        },
+                                      ),
+                                      SizedBox(
+                                        width: size.width * 0.02,
+                                      ),
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: colorIO6,
+                                            border:
+                                                Border.all(color: Colors.black),
+                                          ),
+                                          child: const Text(
+                                            'IO>100',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          colorIO1 = Colors.white;
+                                          colorIO2 = Colors.white;
+                                          colorIO3 = Colors.white;
+                                          colorIO4 = Colors.white;
+                                          colorIO5 = Colors.white;
+                                          colorIO6 =
+                                              Colors.lightBlue.withOpacity(0.5);
+                                          selectedIO = selectIO('IO>100');
+                                          setState(() {});
+                                        },
+                                      ),
+                                      SizedBox(
+                                        width: size.width * 0.02,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: size.height * 0.02,
+                                  ),
+                                  const Text(
+                                    'Bandwith :',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: size.height * 0.02,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: colorB1,
+                                            border:
+                                                Border.all(color: Colors.black),
+                                          ),
+                                          child: const Text(
+                                            'BW<0.5k',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          colorB1 =
+                                              Colors.lightBlue.withOpacity(0.5);
+                                          colorB2 = Colors.white;
+                                          colorB3 = Colors.white;
+                                          colorB4 = Colors.white;
+                                          selectedBandwith =
+                                              selectIO('BW<0.5k');
+                                          setState(() {});
+                                        },
+                                      ),
+                                      SizedBox(
+                                        width: size.width * 0.02,
+                                      ),
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: colorB2,
+                                            border:
+                                                Border.all(color: Colors.black),
+                                          ),
+                                          child: const Text(
+                                            '0.5k<BW<5k',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          colorB1 = Colors.white;
+                                          colorB2 =
+                                              Colors.lightBlue.withOpacity(0.5);
+                                          colorB3 = Colors.white;
+                                          colorB4 = Colors.white;
+                                          selectedBandwith =
+                                              selectIO('0.5k<BW<5k');
+                                          setState(() {});
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: size.height * 0.02,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: colorB3,
+                                            border:
+                                                Border.all(color: Colors.black),
+                                          ),
+                                          child: const Text(
+                                            '5k<BW<50k',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          colorB1 = Colors.white;
+                                          colorB2 = Colors.white;
+                                          colorB3 =
+                                              Colors.lightBlue.withOpacity(0.5);
+                                          colorB4 = Colors.white;
+                                          selectedBandwith =
+                                              selectIO('5k<BW<50k');
+                                          setState(() {});
+                                        },
+                                      ),
+                                      SizedBox(
+                                        width: size.width * 0.02,
+                                      ),
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: colorB4,
+                                            border:
+                                                Border.all(color: Colors.black),
+                                          ),
+                                          child: const Text(
+                                            'BW>50k',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          colorB1 = Colors.white;
+                                          colorB2 = Colors.white;
+                                          colorB3 = Colors.white;
+                                          colorB4 =
+                                              Colors.lightBlue.withOpacity(0.5);
+                                          selectedBandwith = selectIO('BW>50k');
+                                          setState(() {});
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: size.height * 0.02,
+                                  ),
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        if (_formKey.currentState!.validate()) {
+                                          dbHarFilterProvider
+                                              .getDbHar(
+                                            selectedWP,
+                                            selectedIO[0].toString(),
+                                            selectedIO[1].toString(),
+                                            selectedBandwith[0].toString(),
+                                            selectedBandwith[1].toString(),
+                                            _minFrekuensiController.text,
+                                            _maxFrekuensiController.text,
+                                          )
+                                              .then((value) {
+                                            listDbhar =
+                                                dbHarFilterProvider.dbHar;
+                                            Navigator.pop(context);
+                                          });
+                                        }
                                       },
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: size.height * 0.02,
-                                ),
-                                ElevatedButton(
-                                    onPressed: () {
-                                      if (_formKey.currentState!.validate()) {
-                                        dbHarFilterProvider
-                                            .getDbHar(
-                                          selectedWP,
-                                          selectedIO[0].toString(),
-                                          selectedIO[1].toString(),
-                                          selectedBandwith[0].toString(),
-                                          selectedBandwith[1].toString(),
-                                          _minFrekuensiController.text,
-                                          _maxFrekuensiController.text,
-                                        )
-                                            .then((value) {
-                                          listDbhar = dbHarFilterProvider.dbHar;
-                                          Navigator.pop(context);
-                                        });
-                                      }
-                                    },
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              Colors.deepOrange),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        const Text("Apply",
-                                            style: TextStyle(fontSize: 18))
-                                      ],
-                                    ))
-                              ],
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.deepOrange),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          const Text("Apply",
+                                              style: TextStyle(fontSize: 18))
+                                        ],
+                                      ))
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      );
+                        );
+                      });
                     },
                   );
                 },
@@ -809,245 +814,247 @@ class _DbHarAdminState extends State<DbHarAdmin> {
                       )),
                       context: context,
                       builder: (BuildContext context) {
-                        return Scaffold(
-                          appBar: AppBar(
-                            title: const Text('Filter'),
-                            centerTitle: true,
-                          ),
-                          body: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: size.height * 0.02,
-                                ),
-                                const Center(
-                                  child: Text(
-                                    'Order Berdasarkan :',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
+                        return StatefulBuilder(builder: (context, setState) {
+                          return Scaffold(
+                            appBar: AppBar(
+                              title: const Text('Filter'),
+                              centerTitle: true,
+                            ),
+                            body: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: size.height * 0.02,
+                                  ),
+                                  const Center(
+                                    child: Text(
+                                      'Order Berdasarkan :',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: size.height * 0.02,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: colorOrder1,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: const Text(
-                                          'Bandwith',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        colorOrder1 =
-                                            Colors.lightBlue.withOpacity(0.5);
-                                        colorOrder2 = Colors.white;
-                                        colorOrder3 = Colors.white;
-                                        colorOrder4 = Colors.white;
-                                        selectedOrder = selectOrder();
-                                        setState(() {});
-                                      },
-                                    ),
-                                    SizedBox(
-                                      width: size.width * 0.02,
-                                    ),
-                                    InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: colorOrder2,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: const Text(
-                                          'Work Package',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        colorOrder1 = Colors.white;
-                                        colorOrder2 =
-                                            Colors.lightBlue.withOpacity(0.5);
-                                        colorOrder3 = Colors.white;
-                                        colorOrder4 = Colors.white;
-                                        selectedOrder = selectOrder();
-                                        setState(() {});
-                                      },
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: size.height * 0.02,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: colorOrder3,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: const Text(
-                                          'Jenis Band',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        colorOrder1 = Colors.white;
-                                        colorOrder2 = Colors.white;
-                                        colorOrder3 =
-                                            Colors.lightBlue.withOpacity(0.5);
-                                        colorOrder4 = Colors.white;
-                                        selectedOrder = selectOrder();
-                                        setState(() {});
-                                      },
-                                    ),
-                                    SizedBox(
-                                      width: size.width * 0.02,
-                                    ),
-                                    InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: colorOrder4,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: const Text(
-                                          'Index Overlap',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        colorOrder1 = Colors.white;
-                                        colorOrder2 = Colors.white;
-                                        colorOrder3 = Colors.white;
-                                        colorOrder4 =
-                                            Colors.lightBlue.withOpacity(0.5);
-                                        selectedOrder = selectOrder();
-                                        setState(() {});
-                                      },
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: size.height * 0.02,
-                                ),
-                                const Center(
-                                  child: Text(
-                                    'Metode Sorting :',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                  SizedBox(
+                                    height: size.height * 0.02,
                                   ),
-                                ),
-                                SizedBox(
-                                  height: size.height * 0.02,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: colorSort1,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: const Text(
-                                          'Ascending',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        colorSort1 =
-                                            Colors.lightBlue.withOpacity(0.5);
-                                        colorSort2 = Colors.white;
-                                        selectedSort = selectSort();
-                                        setState(() {});
-                                      },
-                                    ),
-                                    SizedBox(
-                                      width: size.width * 0.02,
-                                    ),
-                                    InkWell(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: colorSort2,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: const Text(
-                                          'Descending',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        colorSort1 = Colors.white;
-                                        colorSort2 =
-                                            Colors.lightBlue.withOpacity(0.5);
-                                        selectedSort = selectSort();
-                                        setState(() {});
-                                        setState(() {});
-                                      },
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: size.height * 0.02,
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    dbHarSortingProvider
-                                        .getDbHar(selectedSort, selectedOrder)
-                                        .then((value) {
-                                      listDbhar = dbHarSortingProvider.dbHar;
-                                      Navigator.pop(context);
-                                    });
-                                  },
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
-                                        Colors.deepOrange),
-                                  ),
-                                  child: Column(
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      const Text("Apply",
-                                          style: TextStyle(fontSize: 18))
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: colorOrder1,
+                                            border:
+                                                Border.all(color: Colors.black),
+                                          ),
+                                          child: const Text(
+                                            'Bandwith',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          colorOrder1 =
+                                              Colors.lightBlue.withOpacity(0.5);
+                                          colorOrder2 = Colors.white;
+                                          colorOrder3 = Colors.white;
+                                          colorOrder4 = Colors.white;
+                                          selectedOrder = selectOrder();
+                                          setState(() {});
+                                        },
+                                      ),
+                                      SizedBox(
+                                        width: size.width * 0.02,
+                                      ),
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: colorOrder2,
+                                            border:
+                                                Border.all(color: Colors.black),
+                                          ),
+                                          child: const Text(
+                                            'Work Package',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          colorOrder1 = Colors.white;
+                                          colorOrder2 =
+                                              Colors.lightBlue.withOpacity(0.5);
+                                          colorOrder3 = Colors.white;
+                                          colorOrder4 = Colors.white;
+                                          selectedOrder = selectOrder();
+                                          setState(() {});
+                                        },
+                                      ),
                                     ],
                                   ),
-                                ),
-                              ],
+                                  SizedBox(
+                                    height: size.height * 0.02,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: colorOrder3,
+                                            border:
+                                                Border.all(color: Colors.black),
+                                          ),
+                                          child: const Text(
+                                            'Jenis Band',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          colorOrder1 = Colors.white;
+                                          colorOrder2 = Colors.white;
+                                          colorOrder3 =
+                                              Colors.lightBlue.withOpacity(0.5);
+                                          colorOrder4 = Colors.white;
+                                          selectedOrder = selectOrder();
+                                          setState(() {});
+                                        },
+                                      ),
+                                      SizedBox(
+                                        width: size.width * 0.02,
+                                      ),
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: colorOrder4,
+                                            border:
+                                                Border.all(color: Colors.black),
+                                          ),
+                                          child: const Text(
+                                            'Index Overlap',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          colorOrder1 = Colors.white;
+                                          colorOrder2 = Colors.white;
+                                          colorOrder3 = Colors.white;
+                                          colorOrder4 =
+                                              Colors.lightBlue.withOpacity(0.5);
+                                          selectedOrder = selectOrder();
+                                          setState(() {});
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: size.height * 0.02,
+                                  ),
+                                  const Center(
+                                    child: Text(
+                                      'Metode Sorting :',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: size.height * 0.02,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: colorSort1,
+                                            border:
+                                                Border.all(color: Colors.black),
+                                          ),
+                                          child: const Text(
+                                            'Ascending',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          colorSort1 =
+                                              Colors.lightBlue.withOpacity(0.5);
+                                          colorSort2 = Colors.white;
+                                          selectedSort = selectSort();
+                                          setState(() {});
+                                        },
+                                      ),
+                                      SizedBox(
+                                        width: size.width * 0.02,
+                                      ),
+                                      InkWell(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: colorSort2,
+                                            border:
+                                                Border.all(color: Colors.black),
+                                          ),
+                                          child: const Text(
+                                            'Descending',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          colorSort1 = Colors.white;
+                                          colorSort2 =
+                                              Colors.lightBlue.withOpacity(0.5);
+                                          selectedSort = selectSort();
+                                          setState(() {});
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: size.height * 0.02,
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      dbHarSortingProvider
+                                          .getDbHar(selectedSort, selectedOrder)
+                                          .then((value) {
+                                        listDbhar = dbHarSortingProvider.dbHar;
+                                        Navigator.pop(context);
+                                      });
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.deepOrange),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        const Text("Apply",
+                                            style: TextStyle(fontSize: 18))
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        });
                       });
                 },
                 child: const Text('Sorting'),
@@ -1056,7 +1063,14 @@ class _DbHarAdminState extends State<DbHarAdmin> {
                 width: 12,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SearchDbHarScreen(),
+                    ),
+                  );
+                },
                 child: const Text('Search'),
               ),
             ],
@@ -1068,20 +1082,51 @@ class _DbHarAdminState extends State<DbHarAdmin> {
                 final dbhar = listDbhar!.data![index];
                 return ListTile(
                   leading: CircleAvatar(
-                    child: Text(dbhar.idMaindata!),
+                    child: Text(dbhar.no!),
                   ),
                   title: Text(dbhar.document!),
                   trailing: IconButton(
                     onPressed: () {
-                      deleteDbHarProvider
-                          .deleteDbHar(dbhar.idMaindata!)
-                          .then((value) {
-                        Navigator.pushAndRemoveUntil(
-                            (context),
-                            MaterialPageRoute(
-                                builder: (context) => const SplashScreen()),
-                            (route) => false);
-                      });
+                      showDialog<void>(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Apakah anda yakin?'),
+                            content: SingleChildScrollView(
+                              child: ListBody(
+                                children: const <Widget>[
+                                  Text(
+                                      'Setelah dihapus item tidak bisa dipulihkan kembali'),
+                                ],
+                              ),
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('Tidak'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              TextButton(
+                                child: const Text('Ya'),
+                                onPressed: () {
+                                  deleteDbHarProvider
+                                      .deleteDbHar(dbhar.no!)
+                                      .then((value) {
+                                    Navigator.pushAndRemoveUntil(
+                                        (context),
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SplashScreen()),
+                                        (route) => false);
+                                  });
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                     icon: const Icon(Icons.delete_rounded),
                   ),
@@ -1106,7 +1151,7 @@ class _DbHarAdminState extends State<DbHarAdmin> {
                           isuTeknis: dbhar.isuTeknis!,
                           ket: dbhar.ket!,
                           ref: dbhar.ref!,
-                          id: dbhar.idMaindata!,
+                          id: dbhar.no!,
                         ),
                       ),
                     );

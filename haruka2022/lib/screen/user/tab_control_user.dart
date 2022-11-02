@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:haruka2022/screen/account_screen.dart';
-import 'package:haruka2022/screen/user/db_har_user.dart';
+import 'package:haruka2022/screen/apg/apg_user.dart';
+import 'package:haruka2022/screen/awg/awg_screen.dart';
+import 'package:haruka2022/screen/dbhar/db_har_user.dart';
 import 'package:haruka2022/screen/user/home_user.dart';
 
 class TabControlScreen extends StatefulWidget {
@@ -40,9 +42,9 @@ class _TabControlScreenState extends State<TabControlScreen> {
           : currentIndex == 1
               ? DbHarUser()
               : currentIndex == 2
-                  ? Center()
+                  ? AwgScreen()
                   : currentIndex == 3
-                      ? Center()
+                      ? ApgUser()
                       : AccountScreen(),
     );
   }

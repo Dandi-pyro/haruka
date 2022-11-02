@@ -23,13 +23,15 @@ class Data {
   String? username;
   String? email;
   String? message;
+  String? token;
 
-  Data({this.username, this.email, this.message});
+  Data({this.username, this.email, this.message, this.token});
 
   Data.fromJson(Map<String, dynamic> json) {
     username = json['username'];
     email = json['email'];
     message = json['message'];
+    token = json['token'];
   }
 
   Map<String, dynamic> toJson() {
@@ -37,6 +39,7 @@ class Data {
     data['username'] = username;
     data['email'] = email;
     data['message'] = message;
+    data['token'] = token;
     return data;
   }
 }
